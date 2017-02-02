@@ -1,29 +1,92 @@
 <html>
-<body>
-<form action="/add-game" method="post">
-    <input type="text" placeholder="Name" name="gameName"/>
-    <select name="gameGenre">
-        <option selected disabled>Genre</option>
-        <option value="adventure">Adventure</option>
-        <option value="rpg">RPG</option>
-        <option value="strategy">Strategy</option>
-        <option value="shooter">Shooter</option>
-    </select>
-    <select name="gamePlatform">
-        <option selected disabled>Platform</option>
-        <option value="pc">PC</option>
-        <option value="ps4">PS4</option>
-        <option value="xbone">XBox One</option>
-        <option value="wiiu">Wii U</option>
-    </select>
-    <input type="number" placeholder="Release Year" name="gameYear"/>
-    <button type="submit">Add Game</button>
-</form>
 
-<ol>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+{{^user}}
+
+<div class="container">
+<form action="/login" method="post">
+    <input type="text" placeholder="Username" name="userName" required/>
+    <input type="password"  placeholder="Password" name="password"required/>
+    <button type="submit">Login</button>
+</form>
+</div>
+
+{{/user}}
+
+{{#user}}
+
+<div class="container">
+    Welcome, {{name}}!
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+</div>
+
+<br/><br/>
+
+<div class="container">
+<a href="/">All</a>
+<a href="/?genre=adventure">Adventure</a>
+<a href="/?genre=rpg">RPG</a>
+<a href="/?genre=strategy">Strategy</a>
+<a href="/?genre=shooter">Shooter</a>
+</div>
+
+<br/><br/>
+
+<div class="container">
+<form action="/" method="get">
+    <input type="text" placeholder="Search" name="search"/>
+    <button type="submit">Search</button>
+</form>
+</div>
+
+<br/><br/>
+
+<div class="container">
+    <form action="/add-game" method="post">
+        <input type="text" placeholder="Name" name="gameName"/>
+        <select name="gameGenre">
+            <option selected disabled>Genre</option>
+            <option value="adventure">Adventure</option>
+            <option value="rpg">RPG</option>
+            <option value="strategy">Strategy</option>
+            <option value="shooter">Shooter</option>
+        </select>
+        <select name="gamePlatform">
+            <option selected disabled>Platform</option>
+            <option value="pc">PC</option>
+            <option value="ps4">PS4</option>
+            <option value="xbone">XBox One</option>
+            <option value="wiiu">Wii U</option>
+        </select>
+        <input type="number" placeholder="Release Year" name="gameYear"/>
+        <button type="submit">Add Game</button>
+    </form>
+</div>
+<div class="container">
+<table class="table table-striped">
+    <tr><th>Name</th><th>Platform</th><th>Release Year</th></tr>
     {{#games}}
-    <li>{{name}} {{platform}} {{releaseYear}}</li>
+    <tr><td>{{name}}</td><td>{{platform}}</td><td>{{releaseYear}}</td></tr>
     {{/games}}
-</ol>
+</table>
+
+    {{#showNext}}
+    <a href="/?page={{nextPage}}{{#genre}}&genre={{.}}{{/genre}}">Next</a>
+    {{/showNext}}
+
+</div>
+{{/user}}
 </body>
 </html>
